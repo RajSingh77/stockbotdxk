@@ -1,0 +1,29 @@
+name: Daily Stock Picks Email
+
+on:
+  schedule:
+    # 12:00 UTC = 7:00am ET (8:00am during EST). Adjust as you like.
+    - cron: "0 12 * * 1-5"   # weekdays only
+  workflow_dispatch: {}       # lets you trigger it manually from the Actions tab
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run stock bot
+        env:
+          EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: python stock_bot.py
