@@ -259,7 +259,25 @@ def build_email_html(short_df, medium_df, long_df) -> str:
     """
 
 
-def send_email(html_body: str, subject: str): sender = os.environ["EMAIL_ADDRESS"] password = os.environ["EMAIL_APP_PASSWORD"] recipient = os.environ.get("TO_EMAIL", sender) msg = MIMEMultipart("alternative") msg["Subject"] = subject msg["From"] = sender msg["To"] = recipient msg.attach(MIMEText(html_body, "html")) with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server: server.login(sender, password) server.sendmail(sender, recipient, msg.as_string()) print(f"Email sent to {recipient}")
+def send_email(html_body: str, subject: str):
+    sender = os.environ["EMAIL_ADDRESS"]
+    password = os.environ["EMAIL_APP_PASSWORD"]
+    # TO_EMAIL can be a single address or a comma-separated list, e.g.
+    # "me@gmail.com, friend@gmail.com"
+    raw_recipients = os.environ.get("TO_EMAIL", sender)
+    recipients = [addr.strip() for addr in raw_recipients.split(",") if addr.strip()]
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(html_body, "html"))
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(sender, password)
+        server.sendmail(sender, recipients, msg.as_string())
+
+    print(f"Email sent to {', '.join(recipients)}")
 
 
 # ---------------------------------------------------------------------------
