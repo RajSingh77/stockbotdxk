@@ -32,77 +32,57 @@ SECTOR_POOLS = {
     "Tech / Software": [
         "AAPL", "MSFT", "GOOGL", "AMZN", "META", "AVGO", "ORCL", "CRM", "ADBE",
         "AMD", "INTC", "CSCO", "IBM", "NOW", "PANW", "SNPS", "CDNS", "WDAY",
-        "INTU", "SHOP", "ADSK", "ANSS", "TEAM", "DDOG", "NET", "CRWD", "ZS",
-        "OKTA", "MDB", "SNOW", "TTD", "PYPL", "EBAY", "ETSY", "SPOT", "PINS",
-        "TWLO", "DOCU", "ZM", "HUBS", "GTLB", "FTNT", "JNPR", "ANET", "MSI",
-        "ROP", "TDY", "KEYS", "GLW", "DELL",
+        "INTU", "SHOP", "ADSK", "TEAM", "DDOG", "NET", "CRWD", "ZS", "OKTA",
+        "MDB", "SNOW", "PYPL", "EBAY", "ETSY", "SPOT", "PINS", "TWLO", "DOCU",
+        "ZM", "ANET", "MSI", "DELL",
     ],
     "Semiconductors": [
         "NVDA", "MU", "TXN", "QCOM", "AMAT", "LRCX", "KLAC", "ASML", "ON",
         "MCHP", "NXPI", "STM", "TSM", "ADI", "MRVL", "SWKS", "QRVO", "MPWR",
-        "ENTG", "TER", "LSCC", "RMBS", "CRUS", "DIOD", "ALGM", "POWI", "SITM",
-        "WOLF", "ONTO", "UCTT", "FORM", "ICHR", "AEIS", "COHU", "KLIC",
-        "AMKR", "VECO", "ACLS", "IPGP", "SIMO", "HIMX", "OLED",
+        "IPGP", "OLED",
     ],
     "Financials": [
         "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "SCHW", "C",
-        "USB", "PNC", "TFC", "COF", "BK", "STT", "TRV", "ALL", "PGR", "MET",
-        "PRU", "AIG", "CB", "MMC", "AON", "AJG", "BRO", "ICE", "CME", "NDAQ",
-        "MCO", "SPGI", "FI", "GPN", "SYF", "DFS", "ALLY", "RJF", "LPLA",
-        "IVZ", "HBAN", "RF",
+        "USB", "PNC", "TFC", "COF", "BK", "TRV", "ALL", "PGR", "MET", "PRU",
+        "AIG", "CB", "ICE", "CME", "MCO", "SPGI", "FI", "DFS", "ALLY",
     ],
     "Healthcare": [
         "UNH", "JNJ", "LLY", "ABBV", "MRK", "PFE", "TMO", "ABT", "DHR",
         "BMY", "GILD", "CVS", "AMGN", "VRTX", "REGN", "ISRG", "ZTS", "ELV",
-        "CI", "HUM", "CNC", "MDT", "SYK", "BSX", "BDX", "EW", "IDXX", "IQV",
-        "MRNA", "BIIB", "ALGN", "DXCM", "HOLX", "RMD", "WST", "MTD", "A",
-        "ILMN", "INCY", "VTRS", "COR", "MCK",
+        "CI", "HUM", "MDT", "SYK", "BSX", "MRNA", "BIIB", "DXCM",
     ],
     "Consumer": [
         "WMT", "COST", "HD", "MCD", "NKE", "SBUX", "PG", "KO", "PEP", "DIS",
-        "TGT", "LOW", "YUM", "CL", "KMB", "GIS", "KHC", "MDLZ", "MO", "PM",
-        "STZ", "HSY", "K", "CPB", "CAG", "SJM", "MKC", "CLX", "CHD", "EL",
-        "KDP", "MNST", "TAP", "DG", "DLTR", "ROST", "TJX", "BBY", "ULTA",
-        "LULU", "DECK", "CMG", "DPZ",
+        "TGT", "LOW", "YUM", "CL", "GIS", "KHC", "MDLZ", "MO", "PM", "STZ",
+        "HSY", "CLX", "EL", "KDP", "MNST", "DG", "DLTR", "ROST", "TJX",
+        "BBY", "ULTA", "LULU", "CMG", "DPZ",
     ],
     "Industrials": [
         "CAT", "BA", "HON", "UPS", "GE", "LMT", "RTX", "DE", "MMM", "FDX",
-        "NOC", "GD", "TXT", "EMR", "ETN", "ITW", "PH", "DOV", "XYL", "AME",
-        "ROK", "CMI", "PCAR", "WAB", "CSX", "UNP", "NSC", "ODFL", "JBHT",
-        "CHRW", "EXPD", "WM", "RSG", "PWR", "JCI", "CARR", "OTIS", "IEX",
-        "FAST", "GWW",
+        "NOC", "GD", "EMR", "ETN", "ITW", "ROK", "CMI", "CSX", "UNP", "WM",
+        "JCI",
     ],
     "Energy": [
         "XOM", "CVX", "COP", "SLB", "EOG", "PSX", "MPC", "OXY", "VLO", "WMB",
-        "KMI", "OKE", "HAL", "BKR", "DVN", "FANG", "HES", "MRO", "APA",
-        "CTRA", "EQT", "TRGP", "NOV", "AR", "RRC", "SWN", "PBF", "DINO",
-        "DK", "CVI", "TPL", "SM", "MTDR", "CRC", "VNOM", "OVV", "CNX",
+        "KMI", "OKE", "HAL", "BKR", "DVN", "HES",
     ],
     "REITs": [
         "WPC", "O", "PLD", "AMT", "SPG", "EQIX", "PSA", "DLR", "WELL", "AVB",
-        "EQR", "VTR", "ESS", "MAA", "INVH", "EXR", "CPT", "UDR", "ARE",
-        "BXP", "VNO", "KIM", "REG", "FRT", "HST", "IRM", "CCI", "SBAC",
-        "GLPI", "VICI", "EGP", "FR", "REXR", "STAG", "NNN",
+        "EQR", "VICI", "IRM", "CCI",
     ],
     "Communication": [
-        "NFLX", "T", "VZ", "CMCSA", "TMUS", "CHTR", "WBD", "PARA", "FOXA",
-        "FOX", "NWSA", "NWS", "LYV", "MTCH", "IAC", "OMC", "IPG", "TGNA",
-        "LUMN", "CABO", "ATUS", "SIRI", "NYT", "EA", "TTWO", "ANGI", "ZG",
-        "Z", "YELP", "RNG", "VG", "CCOI", "SHEN", "USM",
+        "NFLX", "T", "VZ", "CMCSA", "TMUS", "CHTR", "WBD", "DIS", "LYV",
+        "MTCH", "EA", "TTWO",
     ],
     "Auto / EV": [
         "TSLA", "F", "GM", "RIVN", "LCID", "NIO", "TM", "HMC", "STLA",
-        "XPEV", "LI", "PSNY", "CVNA", "LAD", "KMX", "AN", "GPC", "LKQ",
-        "BWA", "APTV", "LEA", "MGA", "ADNT", "DAN", "THRM", "VC", "ALSN",
-        "OSK", "WBC", "RUSHA", "GNTX", "SAH", "GT",
+        "XPEV", "LI", "CVNA", "KMX", "APTV", "GT",
     ],
     "Popular / High-Retail-Attention": [
         "PLTR", "COIN", "SOFI", "SMCI", "SNAP", "UBER", "ABNB", "DKNG",
-        "ROKU", "SQ", "MARA", "RIOT", "SOUN", "IONQ", "AFRM", "RBLX", "HOOD",
-        "LYFT", "DASH", "CHPT", "BLNK", "QS", "CLSK", "HUT", "BITF", "WULF",
-        "APLD", "RGTI", "QBTS", "ARQQ", "UPST", "PATH", "AI", "BBAI", "GRAB",
-        "SE", "MELI", "CPNG", "W", "CHWY", "CART", "TOST", "DUOL", "ARM",
-        "RDDT", "APP",
+        "ROKU", "SQ", "MARA", "RIOT", "AFRM", "RBLX", "HOOD", "LYFT", "DASH",
+        "UPST", "PATH", "AI", "GRAB", "SE", "MELI", "W", "CHWY", "DUOL",
+        "ARM", "RDDT", "APP",
     ],
 }
 
@@ -522,6 +502,18 @@ def diversified_picks(df: pd.DataFrame, score_col: str) -> pd.DataFrame:
 # FORMATTING
 # ---------------------------------------------------------------------------
 
+def name_label(row_or_name, ticker=None) -> str:
+    """Format as 'Company Name (TICKER)'. Accepts either a row (with 'name'
+    and 'ticker' keys) or a plain name string + ticker."""
+    if ticker is None:
+        name, ticker = row_or_name.get("name") or row_or_name["ticker"], row_or_name["ticker"]
+    else:
+        name = row_or_name
+    if not name or name == ticker:
+        return ticker
+    return f"{name} ({ticker})"
+
+
 def fmt_pct(x):
     if pd.isna(x):
         return "-"
@@ -558,7 +550,7 @@ def render_term_table(df: pd.DataFrame) -> str:
         color = SENTIMENT_COLOR.get(row["sentiment"], "#333")
         rows_html += (
             "<tr>"
-            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;font-weight:bold'>{row['ticker']}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;font-weight:bold'>{name_label(row)}</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(row['price'])}</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;color:{color};font-weight:bold'>{row['sentiment']}</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{row['recommendation']}</td>"
@@ -586,7 +578,7 @@ def render_full_table(df: pd.DataFrame) -> str:
         color = SENTIMENT_COLOR.get(row["sentiment"], "#333")
         rows_html += (
             "<tr>"
-            f"<td style='padding:5px 7px;border-bottom:1px solid #eee;font-weight:bold'>{row['ticker']}</td>"
+            f"<td style='padding:5px 7px;border-bottom:1px solid #eee;font-weight:bold'>{name_label(row)}</td>"
             f"<td style='padding:5px 7px;border-bottom:1px solid #eee'>${fmt_num(row['price'])}</td>"
             f"<td style='padding:5px 7px;border-bottom:1px solid #eee;color:{color}'>{row['sentiment']}</td>"
             f"<td style='padding:5px 7px;border-bottom:1px solid #eee'>{fmt_num(row['trailing_pe'])}</td>"
@@ -607,7 +599,7 @@ def collect_news(df: pd.DataFrame) -> list[dict]:
     all_items = []
     for _, row in df.iterrows():
         for item in row.get("recent_news", []) or []:
-            all_items.append({**item, "ticker": row["ticker"]})
+            all_items.append({**item, "ticker": row["ticker"], "name": row.get("name")})
     all_items.sort(key=lambda x: x["published"], reverse=True)
     return all_items[:MAX_NEWS_ITEMS]
 
@@ -621,9 +613,10 @@ def render_news_section(news_items: list[dict]) -> str:
         hours_ago = int((pd.Timestamp.now(tz="UTC") - item["published"]).total_seconds() // 3600)
         when = f"{hours_ago}h ago" if hours_ago < 48 else f"{hours_ago // 24}d ago"
         link = item.get("link") or "#"
+        label = name_label(item.get("name"), item["ticker"])
         rows_html += (
             "<div style='padding:8px 0;border-bottom:1px solid #eee'>"
-            f"<span style='font-weight:bold'>{item['ticker']}</span> "
+            f"<span style='font-weight:bold'>{label}</span> "
             f"<span style='color:#999;font-size:12px'>({item['publisher']}, {when})</span><br>"
             f"<a href='{link}' style='color:#1a56db;text-decoration:none'>{item['title']}</a>"
             "</div>"
@@ -631,12 +624,12 @@ def render_news_section(news_items: list[dict]) -> str:
     return f"<div style='font-family:Arial,sans-serif;font-size:14px'>{rows_html}</div>"
 
 
-def render_options_table(options_data: dict, sentiment_lookup: dict) -> str:
+def render_options_table(options_data: dict, sentiment_lookup: dict, name_lookup: dict) -> str:
     if not options_data:
         return "<p style='color:#666;font-size:13px'>No options chain data available for today's short/medium-term picks.</p>"
 
     header_cols = [
-        "Ticker", "Expiration", "DTE", "Call Strike", "Call Ask", "Call IV",
+        "Company (Ticker)", "Expiration", "DTE", "Call Strike", "Call Ask", "Call IV",
         "Put Strike", "Put Ask", "Put IV", "Lean",
     ]
     header = "".join(f"<th style='padding:6px 8px;border-bottom:2px solid #333;text-align:left'>{h}</th>" for h in header_cols)
@@ -647,9 +640,10 @@ def render_options_table(options_data: dict, sentiment_lookup: dict) -> str:
         put = snap.get("put") or {}
         sentiment = sentiment_lookup.get(ticker, "Neutral")
         color = SENTIMENT_COLOR.get(sentiment, "#333")
+        label = name_label(name_lookup.get(ticker), ticker)
         rows_html += (
             "<tr>"
-            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;font-weight:bold'>{ticker}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;font-weight:bold'>{label}</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{snap['expiration']}</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{snap['dte']}d</td>"
             f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(call.get('strike'))}</td>"
@@ -694,7 +688,7 @@ def build_email_html(short_df, medium_df, long_df, full_df, news_items, options_
         check volume/open interest yourself before trading. Options can expire worthless; this is
         data, not a recommendation.
       </p>
-      {render_options_table(options_data, dict(zip(full_df["ticker"], full_df["sentiment"])))}
+      {render_options_table(options_data, dict(zip(full_df["ticker"], full_df["sentiment"])), dict(zip(full_df["ticker"], full_df["name"])))}
 
       <h3 style="margin-top:28px">📰 Recent News & Catalysts (last 72h)</h3>
       <p style="color:#666;font-size:12px">
