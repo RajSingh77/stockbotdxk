@@ -14,6 +14,7 @@ import os
 import random
 import smtplib
 import sys
+from datetime import date, datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -179,6 +180,96 @@ def fetch_recent_news(t, hours: int = NEWS_LOOKBACK_HOURS) -> list[dict]:
                 "published": pub_dt,
             })
 
+    return results
+
+
+def pick_expiration(available_dates: list[str], target_days: int = 21, min_days: int = 10, max_days: int = 35):
+    """Pick the expiration closest to ~3 weeks out, within a 10-35 day window."""
+    today = date.today()
+    scored = []
+    for d in available_dates:
+        try:
+            exp_date = datetime.strptime(d, "%Y-%m-%d").date()
+        except Exception:
+            continue
+        days_out = (exp_date - today).days
+        if days_out < 0:
+            continue
+        in_range = min_days <= days_out <= max_days
+        scored.append((0 if in_range else 1, abs(days_out - target_days), d, days_out))
+    if not scored:
+        return None, None
+    scored.sort()
+    _, _, best_exp, best_dte = scored[0]
+    return best_exp, best_dte
+
+
+def nearest_strike_row(chain_df, current_price, option_type: str):
+    """Pick the strike closest to at-the-money, slightly OTM in the trade's direction."""
+    if chain_df is None or chain_df.empty:
+        return None
+    df = chain_df.copy()
+    if option_type == "call":
+        candidates = df[df["strike"] >= current_price].sort_values("strike")
+    else:
+        candidates = df[df["strike"] <= current_price].sort_values("strike", ascending=False)
+    if candidates.empty:
+        candidates = df.iloc[(df["strike"] - current_price).abs().argsort()]
+    return candidates.iloc[0] if not candidates.empty else None
+
+
+def fetch_options_snapshot(ticker: str, current_price: float) -> dict | None:
+    """Pull a real (not simulated) near-the-money call and put roughly 3-4
+    weeks out for one ticker. Returns None if the ticker has no options chain."""
+    try:
+        t = yf.Ticker(ticker)
+        available = t.options
+        if not available:
+            return None
+        exp, dte = pick_expiration(list(available))
+        if not exp:
+            return None
+        chain = t.option_chain(exp)
+    except Exception as e:
+        print(f"  [options skip] {ticker}: {e}", file=sys.stderr)
+        return None
+
+    call_row = nearest_strike_row(chain.calls, current_price, "call")
+    put_row = nearest_strike_row(chain.puts, current_price, "put")
+
+    def row_to_dict(row):
+        if row is None:
+            return None
+        return {
+            "strike": row.get("strike"),
+            "ask": row.get("ask"),
+            "bid": row.get("bid"),
+            "last_price": row.get("lastPrice"),
+            "iv": row.get("impliedVolatility"),
+            "open_interest": row.get("openInterest"),
+        }
+
+    return {
+        "expiration": exp,
+        "dte": dte,
+        "call": row_to_dict(call_row),
+        "put": row_to_dict(put_row),
+    }
+
+
+def fetch_options_for_tickers(tickers: list[str], price_lookup: dict) -> dict:
+    """Fetch options snapshots only for the tickers that actually made the
+    short/medium-term picks -- much cheaper than pulling chains for every
+    scanned ticker."""
+    results = {}
+    for i, ticker in enumerate(tickers, 1):
+        price = price_lookup.get(ticker)
+        if not price:
+            continue
+        print(f"[options {i}/{len(tickers)}] fetching {ticker}...")
+        snap = fetch_options_snapshot(ticker, price)
+        if snap:
+            results[ticker] = snap
     return results
 
 
@@ -540,7 +631,41 @@ def render_news_section(news_items: list[dict]) -> str:
     return f"<div style='font-family:Arial,sans-serif;font-size:14px'>{rows_html}</div>"
 
 
-def build_email_html(short_df, medium_df, long_df, full_df, news_items) -> str:
+def render_options_table(options_data: dict, sentiment_lookup: dict) -> str:
+    if not options_data:
+        return "<p style='color:#666;font-size:13px'>No options chain data available for today's short/medium-term picks.</p>"
+
+    header_cols = [
+        "Ticker", "Expiration", "DTE", "Call Strike", "Call Ask", "Call IV",
+        "Put Strike", "Put Ask", "Put IV", "Lean",
+    ]
+    header = "".join(f"<th style='padding:6px 8px;border-bottom:2px solid #333;text-align:left'>{h}</th>" for h in header_cols)
+
+    rows_html = ""
+    for ticker, snap in options_data.items():
+        call = snap.get("call") or {}
+        put = snap.get("put") or {}
+        sentiment = sentiment_lookup.get(ticker, "Neutral")
+        color = SENTIMENT_COLOR.get(sentiment, "#333")
+        rows_html += (
+            "<tr>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;font-weight:bold'>{ticker}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{snap['expiration']}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{snap['dte']}d</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(call.get('strike'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(call.get('ask'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{fmt_pct(call.get('iv'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(put.get('strike'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>${fmt_num(put.get('ask'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd'>{fmt_pct(put.get('iv'))}</td>"
+            f"<td style='padding:6px 8px;border-bottom:1px solid #ddd;color:{color};font-weight:bold'>{sentiment}</td>"
+            "</tr>"
+        )
+
+    return f"<table style='border-collapse:collapse;width:100%;font-family:Arial,sans-serif;font-size:13px'><tr>{header}</tr>{rows_html}</table>"
+
+
+def build_email_html(short_df, medium_df, long_df, full_df, news_items, options_data) -> str:
     return f"""
     <div style="font-family:Arial,sans-serif;max-width:800px;margin:auto">
       <h2>📊 Daily Stock Picks</h2>
@@ -559,6 +684,17 @@ def build_email_html(short_df, medium_df, long_df, full_df, news_items) -> str:
 
       <h3 style="margin-top:24px">🔵 Long-Term (fundamentals / value)</h3>
       {render_term_table(long_df)}
+
+      <h3 style="margin-top:28px">🎯 Options Snapshot (~3-4 weeks out)</h3>
+      <p style="color:#666;font-size:12px">
+        Real, live options chain data (not a prediction) for tickers in today's short/medium-term
+        picks -- the nearest at-the-money call and put strike for the expiration closest to 3 weeks
+        out (window: 10-35 days). "Lean" just reflects the stock's own sentiment classification
+        above, not a signal specific to the option. Wide bid/ask spreads mean lower liquidity --
+        check volume/open interest yourself before trading. Options can expire worthless; this is
+        data, not a recommendation.
+      </p>
+      {render_options_table(options_data, dict(zip(full_df["ticker"], full_df["sentiment"])))}
 
       <h3 style="margin-top:28px">📰 Recent News & Catalysts (last 72h)</h3>
       <p style="color:#666;font-size:12px">
@@ -631,7 +767,16 @@ def main():
     long_df = diversified_picks(df, "long_score")
     news_items = collect_news(df)
 
-    html = build_email_html(short_df, medium_df, long_df, df, news_items)
+    # Only pull options chains for tickers in the short/medium-term picks --
+    # cheaper than fetching for every scanned ticker, and matches the
+    # "few weeks to a month" timeframe the person actually wants options for.
+    options_tickers = list(dict.fromkeys(
+        list(short_df["ticker"]) + list(medium_df["ticker"])
+    ))
+    price_lookup = dict(zip(df["ticker"], df["price"]))
+    options_data = fetch_options_for_tickers(options_tickers, price_lookup)
+
+    html = build_email_html(short_df, medium_df, long_df, df, news_items, options_data)
 
     from datetime import date
     subject = f"Stock Picks - {date.today().isoformat()}"
